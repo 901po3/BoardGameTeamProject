@@ -1,11 +1,9 @@
 # BoardGameTeamProject
 
 
-[GAME PLAY]
+[Team Leader]
 
-Rami Nassar (Team Lead and Game Manager).
-
-Hyukin Kwon		(manage githup and Game Manager).
+Rami Nassar (Game Manager and organizing team).
 
 --------------------------------------------------------
 
@@ -17,20 +15,26 @@ Lyrence Ladines (UI Menu and Debugger).
 
 [CHARACTER]
 
-Heaseo Chung (Player control).
+Heaseo Chung (Character control).
 
 --------------------------------------------------------
 
 [MAP]
 
-AShley. Proctor (map).
-
 Laurence Smith (Map/Randomization).
+
+AShley. Proctor (Map).
 
 --------------------------------------------------------
 
 [ART]
 
+
+--------------------------------------------------------
+
+[Other features]
+
+Hyukin Kwon (GameManger, githubManager...)
 
 --------------------------------------------------------
 
