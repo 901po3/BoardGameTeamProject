@@ -1,8 +1,5 @@
 # BoardGameTeamProject
 
-Type Name and Role.
-
---------------------------------------------------------
 
 [GAME PLAY]
 
