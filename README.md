@@ -10,23 +10,23 @@ Rami Nassar (Team Lead and Game Manager).
 
 --------------------------------------------------------
 
-UI
+UI.
 Lyrence Ladines (UI Menu and Debugger).
 
 --------------------------------------------------------
 
-CHARACTER
+CHARACTER.
 Heaseo Chung (Player control).
 
 --------------------------------------------------------
 
-MAP
+MAP.
 AShley. Proctor (map).
 Laurence Smith (Map/Randomization).
 
 --------------------------------------------------------
 
-ART
+ART.
 
 
 --------------------------------------------------------
