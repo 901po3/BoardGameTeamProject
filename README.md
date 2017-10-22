@@ -1,18 +1,33 @@
 # BoardGameTeamProject
 
-Type Name and Role
+Type Name and Role.
+
+--------------------------------------------------------
 
 Hyukin Kwon		(manage githup and Game Manager).
 
 Rami Nassar (Team Lead and Game Manager).
 
+--------------------------------------------------------
+
+UI
 Lyrence Ladines (UI Menu and Debugger).
 
+--------------------------------------------------------
 
-AShley. Proctor (map)
-
-=======
+CHARACTER
 Heaseo Chung (Player control).
 
+--------------------------------------------------------
+
+MAP
+AShley. Proctor (map).
 Laurence Smith (Map/Randomization).
+
+--------------------------------------------------------
+
+ART
+
+
+--------------------------------------------------------
 
