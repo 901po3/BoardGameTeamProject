@@ -3,7 +3,7 @@
 
 [Team Leader]
 
-Rami Nassar (Game Manager and Organizing team, ect...).
+Rami Nassar (Game Manager, Organizing team, ect...).
 
 --------------------------------------------------------
 
