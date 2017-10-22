@@ -3,7 +3,7 @@
 
 [Team Leader]
 
-Rami Nassar (Game Manager and Organizing team).
+Rami Nassar (Game Manager and Organizing team, ect...).
 
 --------------------------------------------------------
 
@@ -34,7 +34,7 @@ AShley. Proctor (Map).
 
 [Other features]
 
-Hyukin Kwon (GameManger, githubManager...)
+Hyukin Kwon (GameManger, githubManager, ect...)
 
 --------------------------------------------------------
 
