@@ -32,7 +32,6 @@ AShley. Proctor (Map).
 
 --------------------------------------------------------
 
-[Other features]
 
 Hyukin Kwon (GameManger, githubManager, ect...)
 
