@@ -3,9 +3,9 @@
 
 [GAME PLAY]
 
-Hyukin Kwon		(manage githup and Game Manager).
-
 Rami Nassar (Team Lead and Game Manager).
+
+Hyukin Kwon		(manage githup and Game Manager).
 
 --------------------------------------------------------
 
