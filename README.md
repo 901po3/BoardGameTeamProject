@@ -16,6 +16,7 @@ Lyrence Ladines (UI Menu and Debugger).
 [CHARACTER]
 
 Heaseo Chung (Character control).
+
 Corrie (Character control).
 
 --------------------------------------------------------
