@@ -1,6 +1,14 @@
 ﻿using System.Collections;
 using UnityEngine;
 
+/*I made 3d array and told why i used it, but as i already mentioned this method will cause memory lick.
+  Since we are using small map, it won't cause big trouble, but still it's not good coding style.
+  And there is better and simple way to replace this method.
+  We can simply make a structure for unit that has variables store coordinate of map they are currently standing on.
+  Since we only have 8 players, we can reduce memory usage significantly.
+  I won't fix any code, it's up to you what code you are gona implement for this game.
+  */
+
 public class Map : MonoBehaviour 
 {
     private static Map m_Instance; //singleton
