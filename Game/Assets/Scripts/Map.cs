@@ -25,7 +25,7 @@ public class Map : MonoBehaviour
         get { return m_Instance; }
     }
 
-    private void Awake()
+    private void Start()
     {
         m_Instance = this;
         GenerateMapVisual();
