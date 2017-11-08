@@ -11,6 +11,8 @@ public class UnitControl : MonoBehaviour
     GameObject[] unitArray; // An array storing all 8 units
     int mouseOverX; // X position of mouse (used for tile position)
     int mouseOverY; // y position of mouse (used for tile position)
+    int playerOverX;
+    int playerOverY;
     int turn; // 0=Player 1, 1=Player 2
     int tileType; //Type of tile (Fire,Ice,Rock,Sand)
     bool isFirstClick = false; //check if the player selected unit
@@ -51,8 +53,8 @@ public class UnitControl : MonoBehaviour
 
             Vector3 mosPos = cubeHit.transform.position; //returns the position of Gameobject hit by Raycast
 
-            mouseOverX = cubeHit.transform.GetComponent<IsoTile>().indexX; //gets the indexX from IsoTile script attached to tile prefab for directory
-            mouseOverY = cubeHit.transform.GetComponent<IsoTile>().indexY; //gets the indexY from IsoTile script attached to tile prefab for directory
+            playerOverX = cubeHit.transform.GetComponent<IsoTile>().indexX; //gets the indexX from IsoTile script attached to tile prefab for directory
+            playerOverY = cubeHit.transform.GetComponent<IsoTile>().indexY; //gets the indexY from IsoTile script attached to tile prefab for directory
           
             
             Debug.Log(mosPos); //for testing
@@ -69,6 +71,17 @@ public class UnitControl : MonoBehaviour
 
     public bool SelectUnit(int turn) //returns true if unit is player 
     {
+        Vector2 unitRay = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        RaycastHit2D unitHit = Physics2D.Raycast(unitRay, Vector2.zero);
+
+        if (unitHit.collider.tag == "Background")
+        {
+            mouseOverY = mouseOverX = -1;
+            isFirstClick = false; // assigns false if the if nothing detected by Raycast
+            return false;
+        }
+
+
         int from; //0-3 is player 1 
         int to; //4-7 is player 2 
         if (turn == 1) 
@@ -81,15 +94,15 @@ public class UnitControl : MonoBehaviour
             from = 4;
             to = 8;
         }
-
-        Vector2 unitRay = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        RaycastHit2D unitHit = Physics2D.Raycast(unitRay, Vector2.zero);
+        //RaycastHit hit; //declare Raycast for tracking click position.. MUST FIX
+        // if (Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out hit, 25.0f)) //if statement calculates if the clicked object is a unit and returns unit number.. MUST FIX
+        // {
 
 
         if (unitHit.collider.tag == "Unit") //If unit selected
         {
-            unitHit.transform.gameObject.GetComponent<unit>().selected = true; 
-    
+        unitHit.transform.gameObject.GetComponent<unit>().selected = true; 
+
             for (int i = from; i < to; i++)
             {
                 if (unitArray[i].GetComponent<unit>().selected)
@@ -100,6 +113,8 @@ public class UnitControl : MonoBehaviour
                 }
             }
         }
+            
+        //}
         isFirstClick = false; // assigns false if the if nothing detected by Raycast
         return false;
     }
@@ -110,7 +125,8 @@ public class UnitControl : MonoBehaviour
         int playerXPos = unitArray[selectedUnit].GetComponent<unit>().posX; //stores the x position of the unit
         int PlayerYPos = unitArray[selectedUnit].GetComponent<unit>().posY; //stores the y position of the unit
 
-        tileType = Map.Instance.GetType(mouseOverX, mouseOverY); //returns the x,y position of the tile type
+
+        tileType = Map.Instance.GetType(playerOverX, playerOverY); //returns the x,y position of the tile type
 
         if(SelectUnit(turn))
             FirstClick();
