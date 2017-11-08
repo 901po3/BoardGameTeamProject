@@ -33,7 +33,8 @@ public class UnitControl : MonoBehaviour
         if (Input.GetMouseButtonDown(0))
         {
             FirstClick();
-            UpdateMouseOver();
+            SecondClick();
+            ThirdClick();
         }
 
     }
@@ -81,24 +82,23 @@ public class UnitControl : MonoBehaviour
             to = 8;
         }
 
-        RaycastHit hit; //declare Raycast for tracking click position.. MUST FIX
-        if (Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out hit, 25.0f)) //if statement calculates if the clicked object is a unit and returns unit number.. MUST FIX
-        {
-            if (hit.collider.tag == "Unit") //If unit selected
-            {
-                hit.transform.gameObject.GetComponent<unit>().selected = true; 
+        Vector2 unitRay = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        RaycastHit2D unitHit = Physics2D.Raycast(unitRay, Vector2.zero);
 
-                for (int i = from; i < to; i++)
+
+        if (unitHit.collider.tag == "Unit") //If unit selected
+        {
+            unitHit.transform.gameObject.GetComponent<unit>().selected = true; 
+    
+            for (int i = from; i < to; i++)
+            {
+                if (unitArray[i].GetComponent<unit>().selected)
                 {
-                    if (unitArray[i].GetComponent<unit>().selected)
-                    {
-                        Debug.Log("Unit is clicked");
-                        selectedUnit = i;
-                        return true;
-                    }
+                    Debug.Log("Unit is clicked");
+                    selectedUnit = i;
+                    return true;
                 }
             }
-            
         }
         isFirstClick = false; // assigns false if the if nothing detected by Raycast
         return false;
@@ -106,6 +106,7 @@ public class UnitControl : MonoBehaviour
 
     private void CheckTile() // check tile type to compare to player type
     {
+
         int playerXPos = unitArray[selectedUnit].GetComponent<unit>().posX; //stores the x position of the unit
         int PlayerYPos = unitArray[selectedUnit].GetComponent<unit>().posY; //stores the y position of the unit
 
