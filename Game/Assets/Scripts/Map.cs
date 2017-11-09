@@ -9,8 +9,8 @@ public class Map : MonoBehaviour
     public GameObject[,] map; //Array contains tiles.
     public GameObject TempTile; //tempTile
     public Sprite[] tileTypes; //We are going to use sprite and put it in tempTile.
-    public int mapSizeX = 9;
-    public int mapSizeY = 7;
+    public int mapSizeX;
+    public int mapSizeY;
     float depth = 0;
 
     

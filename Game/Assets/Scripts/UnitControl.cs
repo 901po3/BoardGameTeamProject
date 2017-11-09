@@ -13,7 +13,7 @@ public class UnitControl : MonoBehaviour
     int mouseOverY; // y position of mouse (used for tile position)
     int playerOverX;
     int playerOverY;
-    int turn; // 0=Player 1, 1=Player 2
+    int turn = 1; // 0=Player 1, 1=Player 2
     int tileType; //Type of tile (Fire,Ice,Rock,Sand)
     bool isFirstClick = false; //check if the player selected unit
     bool isSecondClick = false; //check if player selects new tile and if it matches unit type
@@ -26,17 +26,30 @@ public class UnitControl : MonoBehaviour
         unitArray = new GameObject[unitNum]; 
         for (int i = 0; i < unitNum; i++)
         {
-            unitArray[i] = (GameObject)Instantiate(UnitPrefab, new Vector3(0,0,-5), Quaternion.identity);
+            unitArray[i] = (GameObject)Instantiate(UnitPrefab, new Vector3(i,0,-5), Quaternion.identity);
         }
     }
 
     // Update is called once per frame
     void Update() {
+        bool check = false;
         if (Input.GetMouseButtonDown(0))
         {
-            FirstClick();
-            SecondClick();
-            ThirdClick();
+            UpdateMouseOver();
+            //if (!check)
+            //{
+            //    if(!isFirstClick)
+            //        FirstClick();
+            //    if (isFirstClick)
+            //        SecondClick();
+            //}
+            
+            check = true;      
+        }
+ 
+        if(Input.GetMouseButtonUp(0))
+        {
+            check = false;
         }
 
     }
@@ -74,7 +87,7 @@ public class UnitControl : MonoBehaviour
         Vector2 unitRay = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         RaycastHit2D unitHit = Physics2D.Raycast(unitRay, Vector2.zero);
 
-        if (unitHit.collider.tag == "Background")
+        if (unitHit.collider.tag != "Unit")
         {
             mouseOverY = mouseOverX = -1;
             isFirstClick = false; // assigns false if the if nothing detected by Raycast
@@ -107,8 +120,10 @@ public class UnitControl : MonoBehaviour
             {
                 if (unitArray[i].GetComponent<unit>().selected)
                 {
-                    Debug.Log("Unit is clicked");
+                    unitHit.transform.gameObject.GetComponent<unit>().selected = false;
+                    Debug.Log(i + " Unit is clicked");
                     selectedUnit = i;
+                    isFirstClick = true;
                     return true;
                 }
             }

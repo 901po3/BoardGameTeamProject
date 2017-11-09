@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Unit
   - Map
+  - Background
   layers:
   - Default
   - TransparentFX
