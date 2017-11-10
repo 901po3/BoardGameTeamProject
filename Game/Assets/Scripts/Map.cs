@@ -13,6 +13,7 @@ public class Map : MonoBehaviour
     public int mapSizeY;
     float depth = 0;
 
+    public GameObject gafas;
     
     public static Map Instance //use this to call singleton
     {
@@ -23,6 +24,7 @@ public class Map : MonoBehaviour
     {
         m_Instance = this;
         GenerateMapVisual();
+        //GenerateBackground();
     }
 
     private void Update()
@@ -33,6 +35,22 @@ public class Map : MonoBehaviour
     private void OnDestroy()
     {
         m_Instance = null;
+    }
+
+    void GenerateBackground()
+    {
+        for (int i = 0; i < 100; i++)
+        {
+            for (int j = 0; j < 100; j++)
+            {
+                Debug.Log("dssa0");
+                Vector2 tpos = new Vector2(j, i);
+                tpos = General.Instance.twoDToIso(tpos);
+
+                Instantiate(gafas, new Vector3(tpos.x, tpos.y + Random.Range(-0.5f, 0.5f) , depth ), Quaternion.identity);
+                depth += 0.1f;
+            }
+        }
     }
 
     void GenerateMapVisual()
@@ -46,7 +64,7 @@ public class Map : MonoBehaviour
                 Vector2 tpos = new Vector2(j, i);
                 tpos = General.Instance.twoDToIso(tpos);
 
-                map[j, i] = (GameObject)Instantiate(TempTile, new Vector3(tpos.x, tpos.y, depth), Quaternion.identity);
+                map[j, i] = (GameObject)Instantiate(TempTile, new Vector3(tpos.x, tpos.y + Random.Range(-0.09f, 0.09f), depth), Quaternion.identity);
                 map[j, i].GetComponent<IsoTile>().indexX = j;
                 map[j, i].GetComponent<IsoTile>().indexY = i;
                 depth += 0.1f;

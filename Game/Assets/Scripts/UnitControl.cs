@@ -13,6 +13,8 @@ public class UnitControl : MonoBehaviour
     int mouseOverY; // y position of mouse (used for tile position)
     int playerOverX;
     int playerOverY;
+    int unitPosX = 0;
+    int unitPosY = 0;
     int turn = 1; // 0=Player 1, 1=Player 2
     int tileType; //Type of tile (Fire,Ice,Rock,Sand)
     bool isFirstClick = false; //check if the player selected unit
@@ -22,11 +24,39 @@ public class UnitControl : MonoBehaviour
 
     // Use this for initialization
     void Start() {
+        initUnit();
+    }
+
+    void initUnit() // Generate initial unit
+    {
+        int distance = 2;
+        int startPointX = 1;
+        int indexX = 0;
+        int indexY = 0;
         unitNum = 8; //# of Player units
-        unitArray = new GameObject[unitNum]; 
+        unitArray = new GameObject[unitNum];
+
         for (int i = 0; i < unitNum; i++)
         {
-            unitArray[i] = (GameObject)Instantiate(UnitPrefab, new Vector3(i,0,-5), Quaternion.identity);
+            unitArray[i] = Instantiate(UnitPrefab, new Vector3(0, 0, -10), Quaternion.identity);
+            if (i < unitNum / 2)
+            {
+                indexX = unitArray[i].GetComponent<unit>().indexX = startPointX;
+                indexY = unitArray[i].GetComponent<unit>().indexY = 0;
+                startPointX += distance;
+                if (i == unitNum / 2 - 1)
+                    startPointX = 1;
+            }
+            if (i >= unitNum / 2)
+            {
+                indexX = unitArray[i].GetComponent<unit>().indexX = startPointX;
+                indexY = unitArray[i].GetComponent<unit>().indexY = Map.Instance.mapSizeX - 1;
+                startPointX += distance;
+            }
+            unitArray[i].transform.position = 
+                new Vector3( Map.Instance.map[indexX, indexY].transform.position.x +0.11f,
+                Map.Instance.map[indexX, indexY].transform.position.y +0.9f, -10);
+
         }
     }
 
@@ -35,15 +65,15 @@ public class UnitControl : MonoBehaviour
         bool check = false;
         if (Input.GetMouseButtonDown(0))
         {
-            UpdateMouseOver();
-            //if (!check)
-            //{
-            //    if(!isFirstClick)
-            //        FirstClick();
-            //    if (isFirstClick)
-            //        SecondClick();
-            //}
-            
+            //selectTile();
+            if (!check)
+            {
+                if(!isFirstClick)
+                    FirstClick();
+                if (isFirstClick)
+                    SecondClick();
+            }
+              
             check = true;      
         }
  
@@ -55,7 +85,7 @@ public class UnitControl : MonoBehaviour
     }
 
 
-    public void UpdateMouseOver() //update position of tile
+    public void selectTile() //update position of tile
     {
 
         Vector2 cubeRay = Camera.main.ScreenToWorldPoint(Input.mousePosition); // gets position of mouse and stores it in a Vector2 
@@ -77,8 +107,7 @@ public class UnitControl : MonoBehaviour
         }
         else //no tile clicked
         {
-            mouseOverX = -1;
-            mouseOverY = -1;
+            mouseOverX = mouseOverY = -1;
         }
     }
 
@@ -107,11 +136,7 @@ public class UnitControl : MonoBehaviour
             from = 4;
             to = 8;
         }
-        //RaycastHit hit; //declare Raycast for tracking click position.. MUST FIX
-        // if (Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out hit, 25.0f)) //if statement calculates if the clicked object is a unit and returns unit number.. MUST FIX
-        // {
-
-
+   
         if (unitHit.collider.tag == "Unit") //If unit selected
         {
         unitHit.transform.gameObject.GetComponent<unit>().selected = true; 
@@ -121,15 +146,14 @@ public class UnitControl : MonoBehaviour
                 if (unitArray[i].GetComponent<unit>().selected)
                 {
                     unitHit.transform.gameObject.GetComponent<unit>().selected = false;
-                    Debug.Log(i + " Unit is clicked");
+                    Debug.Log(i + " Unit is clicked"); 
                     selectedUnit = i;
                     isFirstClick = true;
                     return true;
                 }
             }
         }
-            
-        //}
+
         isFirstClick = false; // assigns false if the if nothing detected by Raycast
         return false;
     }
@@ -137,19 +161,19 @@ public class UnitControl : MonoBehaviour
     private void CheckTile() // check tile type to compare to player type
     {
 
-        int playerXPos = unitArray[selectedUnit].GetComponent<unit>().posX; //stores the x position of the unit
-        int PlayerYPos = unitArray[selectedUnit].GetComponent<unit>().posY; //stores the y position of the unit
+        float playerXIndex = unitArray[selectedUnit].GetComponent<unit>().indexX; //stores the x position of the unit
+        float PlayerYIndex = unitArray[selectedUnit].GetComponent<unit>().indexY; //stores the y position of the unit
 
 
         tileType = Map.Instance.GetType(playerOverX, playerOverY); //returns the x,y position of the tile type
 
-        if(SelectUnit(turn))
-            FirstClick();
+        //if(SelectUnit(turn))
+        //    FirstClick();
 
-        if ((playerXPos + 1 == mouseOverX && PlayerYPos == mouseOverY) ||    //Checks if the tile selected is directly beside the unit
-            (playerXPos - 1 == mouseOverX && PlayerYPos == mouseOverY) ||
-            (playerXPos == mouseOverX && PlayerYPos + 1 == mouseOverY) ||
-            (playerXPos == mouseOverX && PlayerYPos - 1 == mouseOverY))      
+        if ((playerXIndex + 1 == mouseOverX && PlayerYIndex == mouseOverY) ||    //Checks if the tile selected is directly beside the unit
+            (playerXIndex - 1 == mouseOverX && PlayerYIndex == mouseOverY) ||
+            (playerXIndex == mouseOverX && PlayerYIndex + 1 == mouseOverY) ||
+            (playerXIndex == mouseOverX && PlayerYIndex - 1 == mouseOverY))      
         {
             if (tileType == unitArray[selectedUnit].GetComponent<unit>().type) 
             {
@@ -158,7 +182,7 @@ public class UnitControl : MonoBehaviour
                 return;
             }
         }
-
+        isFirstClick = false;
         isSecondClick = false;
     }
 
@@ -176,7 +200,7 @@ public class UnitControl : MonoBehaviour
     {
         if (!isFirstClick) return;
 
-        UpdateMouseOver();
+        selectTile();
         CheckTile();
     }
     private void ThirdClick() //moves unit to new position

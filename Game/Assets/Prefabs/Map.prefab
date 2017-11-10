@@ -20,7 +20,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4999603408367142}
   - component: {fileID: 114706259831652296}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Map
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -51,9 +51,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5f098c2e2c1534247822795a942ad873, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  typeNum: 4
   TempTile: {fileID: 1619548806408960, guid: 9d72a6e927edeab42807f65e18730365, type: 2}
   tileTypes:
   - {fileID: 21300000, guid: 13ea1d8428e49c14c90442cec4ef095e, type: 3}
-  - {fileID: 21300000, guid: bc88e5be61642e44885c2d7d8048513f, type: 3}
-  - {fileID: 21300000, guid: 5beeaad761521af4a93280f706454502, type: 3}
-  - {fileID: 21300000, guid: 2c5a3117d5db1264188c0e85c12e64c7, type: 3}
+  - {fileID: 21300000, guid: 2047b67e95877e24b9ad5dd4a2b51c8e, type: 3}
+  - {fileID: 21300000, guid: 27850de8d19393545a1af52d1a5c35cb, type: 3}
+  - {fileID: 21300000, guid: 8ba6494715c915547b322c0c281b7b78, type: 3}
+  mapSizeX: 16
+  mapSizeY: 9
+  gafas: {fileID: 1544259842600648, guid: 439f5eaa8eb980746ab178094c85d99d, type: 2}
