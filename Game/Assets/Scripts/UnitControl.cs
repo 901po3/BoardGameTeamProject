@@ -5,80 +5,103 @@ using UnityEngine.EventSystems;
 
 public class UnitControl : MonoBehaviour
 {
-
+    public Sprite[] unitSpriteArray;
     int unitNum; // The total number of units
     int selectedUnit; // The selected units number
     GameObject[] unitArray; // An array storing all 8 units
     int mouseOverX; // X position of mouse (used for tile position)
     int mouseOverY; // y position of mouse (used for tile position)
-    int playerOverX;
-    int playerOverY;
-    int turn = 1; // 0=Player 1, 1=Player 2
-    int tileType; //Type of tile (Fire,Ice,Rock,Sand)
-    bool isFirstClick = false; //check if the player selected unit
-    bool isSecondClick = false; //check if player selects new tile and if it matches unit type
+    float offsetY;
+    int turn = 1;
+    public int tileType; //Type of tile (Fire,Ice,Rock,Sand)
+    public bool isFirstClick = false; //check if the player selected unit
+    public bool isSecondClick = false; //check if player selects new tile and if it matches unit type
     public GameObject UnitPrefab;
-
-
+    bool move = false;
+    public float speed = 1000;
+    public int prevX, prevY;
+    bool resulfOfFistClick = false;
     // Use this for initialization
-    void Start() {
-        unitNum = 8; //# of Player units
-        unitArray = new GameObject[unitNum]; 
-        for (int i = 0; i < unitNum; i++)
-        {
-            unitArray[i] = (GameObject)Instantiate(UnitPrefab, new Vector3(i,0,-5), Quaternion.identity);
-        }
+    void Start()
+    {
+        prevX = prevY = -1;
+        offsetY = Map.Instance.tileSize / 1.2f;
+        initUnit();
     }
 
     // Update is called once per frame
-    void Update() {
-        bool check = false;
-        if (Input.GetMouseButtonDown(0))
-        {
-            UpdateMouseOver();
-            //if (!check)
-            //{
-            //    if(!isFirstClick)
-            //        FirstClick();
-            //    if (isFirstClick)
-            //        SecondClick();
-            //}
-            
-            check = true;      
-        }
- 
-        if(Input.GetMouseButtonUp(0))
+    void Update()
+    {
+        bool check = true;
+        if (Input.GetMouseButtonDown(0) && check)
         {
             check = false;
+
+            if (!isFirstClick)
+                FirstClick();
+            else if (isFirstClick && !isSecondClick)
+                CheckTile();
+        }
+
+        if (Input.GetMouseButtonUp(0))
+        {
+            check = true;
         }
 
     }
 
-
-    public void UpdateMouseOver() //update position of tile
+    void initUnit() // Generate initial unit
     {
+        int distance = 2;
+        int startPointX = 1;
+        int indexX = 0;
+        int indexY = 0; 
+        unitNum = 8; //# of Player units
+        unitArray = new GameObject[unitNum];
 
-        Vector2 cubeRay = Camera.main.ScreenToWorldPoint(Input.mousePosition); // gets position of mouse and stores it in a Vector2 
-        RaycastHit2D cubeHit = Physics2D.Raycast(cubeRay, Vector2.zero); // Uses a Raycast cast from mouse position to the scene??? I think LOL
-            
-        if (cubeHit.transform.tag == "Map")  //checks if the object hit has a map tag
+        for (int i = 0; i < unitNum; i++)
         {
+            unitArray[i] = Instantiate(UnitPrefab, new Vector3(0, 0, -10), Quaternion.identity);
+            unitArray[i].GetComponent<SpriteRenderer>().sprite = unitSpriteArray[i];
 
-            Vector3 mosPos = cubeHit.transform.position; //returns the position of Gameobject hit by Raycast
+            switch(i)
+            {
+                case 0:
+                case 4:
+                    unitArray[i].GetComponent<unit>().type = 0;
+                    break;
+                case 1:
+                case 5:
+                    unitArray[i].GetComponent<unit>().type = 1;
+                    break;
+                case 2:
+                case 6:
+                    unitArray[i].GetComponent<unit>().type = 2;
+                    break;
+                case 3:
+                case 7:
+                    unitArray[i].GetComponent<unit>().type = 3;
+                    break;
+            }
+            if (i < unitNum / 2)
+            {
+                indexX = unitArray[i].GetComponent<unit>().indexX = startPointX;
+                indexY = unitArray[i].GetComponent<unit>().indexY = 0;
+                startPointX += distance;
+                if (i == unitNum / 2 - 1)
+                    startPointX = 1;
+            }
+            if (i >= unitNum / 2)
+            {
+                indexX = unitArray[i].GetComponent<unit>().indexX = startPointX;
+                indexY = unitArray[i].GetComponent<unit>().indexY = Map.Instance.mapSizeX - 1;
+                startPointX += distance;
+            }
+            unitArray[i].transform.position =
+                new Vector3(Map.Instance.map[indexX, indexY].transform.position.x,
+                Map.Instance.map[indexX, indexY].transform.position.y + offsetY,
+                Map.Instance.map[indexX, indexY].transform.position.z - 0.1f);
 
-            playerOverX = cubeHit.transform.GetComponent<IsoTile>().indexX; //gets the indexX from IsoTile script attached to tile prefab for directory
-            playerOverY = cubeHit.transform.GetComponent<IsoTile>().indexY; //gets the indexY from IsoTile script attached to tile prefab for directory
-          
-            
-            Debug.Log(mosPos); //for testing
-            Debug.Log(mouseOverX); //for testing
-            Debug.Log(mouseOverY); //for testing
-            
-        }
-        else //no tile clicked
-        {
-            mouseOverX = -1;
-            mouseOverY = -1;
         }
     }
 
@@ -90,98 +113,112 @@ public class UnitControl : MonoBehaviour
         if (unitHit.collider.tag != "Unit")
         {
             mouseOverY = mouseOverX = -1;
-            isFirstClick = false; // assigns false if the if nothing detected by Raycast
             return false;
         }
 
-
-        int from; //0-3 is player 1 
-        int to; //4-7 is player 2 
-        if (turn == 1) 
-        {
-            from = 0;
-            to = 4;
-        }
-        else
-        {
-            from = 4;
-            to = 8;
-        }
-        //RaycastHit hit; //declare Raycast for tracking click position.. MUST FIX
-        // if (Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out hit, 25.0f)) //if statement calculates if the clicked object is a unit and returns unit number.. MUST FIX
-        // {
-
-
         if (unitHit.collider.tag == "Unit") //If unit selected
         {
-        unitHit.transform.gameObject.GetComponent<unit>().selected = true; 
+            unitHit.transform.gameObject.GetComponent<unit>().selected = true;
 
-            for (int i = from; i < to; i++)
+            for (int i = 0; i < unitNum; i++)
             {
                 if (unitArray[i].GetComponent<unit>().selected)
                 {
                     unitHit.transform.gameObject.GetComponent<unit>().selected = false;
                     Debug.Log(i + " Unit is clicked");
                     selectedUnit = i;
-                    isFirstClick = true;
                     return true;
                 }
             }
         }
-            
-        //}
-        isFirstClick = false; // assigns false if the if nothing detected by Raycast
         return false;
     }
 
     private void CheckTile() // check tile type to compare to player type
     {
+        Vector2 cubeRay = Camera.main.ScreenToWorldPoint(Input.mousePosition); // gets position of mouse and stores it in a Vector2 
+        RaycastHit2D cubeHit = Physics2D.Raycast(cubeRay, Vector2.zero); // Uses a Raycast cast from mouse position to the scene??? I think LOL
+        int playerXIndex = unitArray[selectedUnit].GetComponent<unit>().indexX; //stores the x position of the unit
+        int PlayerYIndex = unitArray[selectedUnit].GetComponent<unit>().indexY; //stores the y position of the unit
 
-        int playerXPos = unitArray[selectedUnit].GetComponent<unit>().posX; //stores the x position of the unit
-        int PlayerYPos = unitArray[selectedUnit].GetComponent<unit>().posY; //stores the y position of the unit
-
-
-        tileType = Map.Instance.GetType(playerOverX, playerOverY); //returns the x,y position of the tile type
-
-        if(SelectUnit(turn))
-            FirstClick();
-
-        if ((playerXPos + 1 == mouseOverX && PlayerYPos == mouseOverY) ||    //Checks if the tile selected is directly beside the unit
-            (playerXPos - 1 == mouseOverX && PlayerYPos == mouseOverY) ||
-            (playerXPos == mouseOverX && PlayerYPos + 1 == mouseOverY) ||
-            (playerXPos == mouseOverX && PlayerYPos - 1 == mouseOverY))      
+        if (cubeHit.transform.tag == "Map")  //checks if the object hit has a map tag
         {
-            if (tileType == unitArray[selectedUnit].GetComponent<unit>().type) 
-            {
-                isSecondClick = true;
-                Debug.Log("Tile is clicked");
-                return;
-            }
+            Vector3 mosPos = cubeHit.transform.position; //returns the position of Gameobject hit by Raycast
+
+            mouseOverX = cubeHit.transform.GetComponent<IsoTile>().indexX; //gets the indexX from IsoTile script attached to tile prefab for directory
+            mouseOverY = cubeHit.transform.GetComponent<IsoTile>().indexY; //gets the indexY from IsoTile script attached to tile prefab for directory
+        }
+        else if (cubeHit.transform.tag == "Unit")
+        {
+            FirstClick();
+            return;
+        }
+        else //no tile clicked
+        {
+            mouseOverX = mouseOverX = -1;
         }
 
+        tileType = Map.Instance.GetType(mouseOverX, mouseOverY); //returns the x,y position of the tile type
+
+        if ((playerXIndex + 1 == mouseOverX && PlayerYIndex == mouseOverY) ||    //Checks if the tile selected is directly beside the unit
+            (playerXIndex - 1 == mouseOverX && PlayerYIndex == mouseOverY) ||
+            (playerXIndex == mouseOverX && PlayerYIndex + 1 == mouseOverY) ||
+            (playerXIndex == mouseOverX && PlayerYIndex - 1 == mouseOverY))
+        {
+            if (tileType == unitArray[selectedUnit].GetComponent<unit>().type)  //should be added after randomization map is done.
+            {
+                 if (prevX == mouseOverX && prevY == mouseOverY)
+                 {
+                     isSecondClick = true;
+                     MoveUnit();
+                     Debug.Log("Tile is clicked second times");
+                     return;
+                 }
+                 prevX = mouseOverX;
+                 prevY = mouseOverY;
+                 Debug.Log("Tile is clicked");
+                 return;
+            }
+        }
         isSecondClick = false;
     }
 
     private void MoveUnit() //translate unit position and change Sprite
     {
-        
+        GameObject tilePos = Map.Instance.map[mouseOverX, mouseOverY];
+        float destPosX = tilePos.transform.position.x;
+        float destPosY = tilePos.transform.position.y;
+        float destPosZ = tilePos.transform.position.z;
+
+        int curIndexX = unitArray[selectedUnit].GetComponent<unit>().indexX = mouseOverX;
+        int curIndexY = unitArray[selectedUnit].GetComponent<unit>().indexY = mouseOverY;
+
+        unitArray[selectedUnit].transform.position =
+                new Vector3(destPosX, destPosY + offsetY, destPosZ - 0.1f);
+        isFirstClick = false;
+        isSecondClick = false;
+
+        if(turn == 1)
+            turn = 2;
+        else
+            turn = 1;
     }
 
     private void FirstClick() //firstClick returns the unit number and turns firstClick to true to allow secondClick
     {
-        isFirstClick = true;
-        SelectUnit(turn);
+         resulfOfFistClick = SelectUnit(turn);
     }
-    private void SecondClick() //SecondClick returns the selected tile type and position
-    {
-        if (!isFirstClick) return;
 
-        UpdateMouseOver();
-        CheckTile();
-    }
-    private void ThirdClick() //moves unit to new position
+
+
+    /// <summary>
+    /// 뭐라는지 모르겠지? ㅎㅎㅎㅎ
+    /// </summary>
+    public void UnitButtonPush()
     {
-        if (!isSecondClick) return;
-        MoveUnit();
+        if(resulfOfFistClick)
+        {
+            isFirstClick = true;
+        }
     }
 }

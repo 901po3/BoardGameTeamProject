@@ -5,18 +5,22 @@ using UnityEngine;
 public class unit : MonoBehaviour   {
 
     public int type; //double check
-    public int posX; //character position
-    public int posY;
+    public int indexX;
+    public int indexY;
     Vector2 size;
-    Vector2 offSet;
-    public Sprite[] image; //character image
-    private Vector2 mouseOver;
+    public float offsetY = 1.5f;
+    public float offsetX = 0.2f;
     public  bool selected = false; //if character is selected 
 
     private void Awake()
     {
-        size = GetComponent<SpriteRenderer>().sprite.rect.size;
-        offSet = new Vector2(size.x / 2, size.y);
+        for (int i = 0; i < 4; i++)
+        {
+            size = GetComponent<SpriteRenderer>().transform.localScale;
+            size = new Vector2(size.x * 0.88f, size.y * 0.88f);
+
+            GetComponent<SpriteRenderer>().transform.localScale = size;
+        }
     }
     
 }
