@@ -209,6 +209,11 @@ public class UnitControl : MonoBehaviour
          resulfOfFistClick = SelectUnit(turn);
     }
 
+
+
+    /// <summary>
+    /// 뭐라는지 모르겠지? ㅎㅎㅎㅎ
+    /// </summary>
     public void UnitButtonPush()
     {
         if(resulfOfFistClick)
