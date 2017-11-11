@@ -10,8 +10,6 @@ public class unit : MonoBehaviour   {
     Vector2 size;
     public float offsetY = 1.5f;
     public float offsetX = 0.2f;
-    public Sprite[] image; //character image
-    private Vector2 mouseOver;
     public  bool selected = false; //if character is selected 
 
     private void Awake()
@@ -19,7 +17,6 @@ public class unit : MonoBehaviour   {
         for (int i = 0; i < 4; i++)
         {
             size = GetComponent<SpriteRenderer>().transform.localScale;
-            GetComponent<SpriteRenderer>().sprite = image[i];
             size = new Vector2(size.x * 0.88f, size.y * 0.88f);
 
             GetComponent<SpriteRenderer>().transform.localScale = size;

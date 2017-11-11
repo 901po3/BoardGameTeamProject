@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-enum  tileType { FIRE, ICE, ROCK, SAND };
+enum  tileType { FIRE, WATER, ROCK, GRASS };
 
 public class General : MonoBehaviour {
     private static General m_Instance;
