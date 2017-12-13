@@ -1,0 +1,118 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1001 &100100000
+Prefab:
+  m_ObjectHideFlags: 1
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications: []
+    m_RemovedComponents: []
+  m_ParentPrefab: {fileID: 0}
+  m_RootGameObject: {fileID: 1804204979803918}
+  m_IsPrefabParent: 1
+--- !u!1 &1804204979803918
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 4668284982013442}
+  - component: {fileID: 114399896527560832}
+  m_Layer: 0
+  m_Name: AudioManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4668284982013442
+Transform:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1804204979803918}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 270.27982, y: 226.22527, z: -36.25}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &114399896527560832
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1804204979803918}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d572aa9eb9e66094cbbf81c85fb75fff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sounds:
+  - name: 
+    mute: 0
+    loop: 0
+    type: 0
+    clip: {fileID: 0}
+    output: {fileID: 0}
+    volume: 0
+    pitch: 0
+    source: {fileID: 0}
+  - name: MAIN
+    mute: 0
+    loop: 1
+    type: 0
+    clip: {fileID: 8300000, guid: 2108fe237963af540bdf9175809567f2, type: 3}
+    output: {fileID: 243069620373134946, guid: 072fd08f2db9d0443960fd0386d1edcb, type: 2}
+    volume: 1
+    pitch: 1
+    source: {fileID: 0}
+  - name: OPTIONS
+    mute: 0
+    loop: 1
+    type: 0
+    clip: {fileID: 8300000, guid: d4e9fa99f4ac0774ca11cfac3c9a5226, type: 3}
+    output: {fileID: 243069620373134946, guid: 072fd08f2db9d0443960fd0386d1edcb, type: 2}
+    volume: 1
+    pitch: 1
+    source: {fileID: 0}
+  - name: BUTTON
+    mute: 0
+    loop: 0
+    type: 0
+    clip: {fileID: 8300000, guid: ecb27f0ddce48854b9f50d6187fd09b2, type: 3}
+    output: {fileID: 243389830582322166, guid: 072fd08f2db9d0443960fd0386d1edcb, type: 2}
+    volume: 1
+    pitch: 1
+    source: {fileID: 0}
+  - name: SELECTTILE
+    mute: 0
+    loop: 0
+    type: 0
+    clip: {fileID: 8300000, guid: dc422903b48b2444a8ba13c058692408, type: 3}
+    output: {fileID: 243389830582322166, guid: 072fd08f2db9d0443960fd0386d1edcb, type: 2}
+    volume: 1
+    pitch: 1
+    source: {fileID: 0}
+  - name: MOVE
+    mute: 0
+    loop: 0
+    type: 0
+    clip: {fileID: 8300000, guid: ec1aaa55992f80340a1898f46e428a4f, type: 3}
+    output: {fileID: 243389830582322166, guid: 072fd08f2db9d0443960fd0386d1edcb, type: 2}
+    volume: 1
+    pitch: 1
+    source: {fileID: 0}
+  - name: VICTORY
+    mute: 0
+    loop: 0
+    type: 0
+    clip: {fileID: 8300000, guid: 80b13e8603a39ff42ab5e8e8eb2654c9, type: 3}
+    output: {fileID: 243389830582322166, guid: 072fd08f2db9d0443960fd0386d1edcb, type: 2}
+    volume: 1
+    pitch: 1
+    source: {fileID: 0}
+  MainMixer: {fileID: 24100000, guid: 072fd08f2db9d0443960fd0386d1edcb, type: 2}
